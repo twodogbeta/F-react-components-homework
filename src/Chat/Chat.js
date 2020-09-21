@@ -5,6 +5,7 @@ import ChatBox from './ChatBox/ChatBox';
 import ChatInput from './ChatInput/ChatInput';
 import shopData from '../data/shop.json';
 import answersData from '../data/answers.json';
+import autoResponse from './AutoResponse';
 
 class Chat extends Component {
   constructor(props, context) {
@@ -13,6 +14,7 @@ class Chat extends Component {
       shop: {},
       messages: [],
     };
+    this.handleMessage = this.handleMessage.bind(this);
   }
 
   componentDidMount() {
@@ -27,13 +29,23 @@ class Chat extends Component {
     }, 1000);
   }
 
+  handleMessage(message) {
+    const customMessage = message;
+    const robotMessage = autoResponse(message);
+    const { messages } = this.state;
+
+    messages.push(customMessage);
+    messages.push(robotMessage);
+    this.setState({ messages });
+  }
+
   render() {
     const { shop, messages } = this.state;
     return (
       <main className="Chat">
         <ChatHeader shop={shop} />
         <ChatBox messages={messages} />
-        <ChatInput />
+        <ChatInput onSendMessage={this.handleMessage} />
       </main>
     );
   }
