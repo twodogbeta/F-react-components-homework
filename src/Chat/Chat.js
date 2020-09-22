@@ -35,7 +35,10 @@ class Chat extends Component {
     const { messages } = this.state;
 
     messages.push(customMessage);
-    messages.push(robotMessage);
+    if (robotMessage !== null) {
+      messages.push(robotMessage);
+    }
+
     this.setState({ messages });
   }
 
